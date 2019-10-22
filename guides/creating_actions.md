@@ -27,24 +27,35 @@ exports.main = main;
 You can create an action called *test* using this command:
 ```
 wsk action create test first-function.js
+# or
+aio rt action create test first-function.js
 ```
+
 You can update an action at any time using the following command:
 ```
 wsk action update test first-function.js
+# or
+aio rt action update test first-function.js
 ```
 If you don&rsquo;t need an action anymore, you can delete it:
 ```
 wsk action delete test
+# or
+aio rt action delete test
 ```
 
 If you want to save an action that is deployed to your machine, then you can use this command:
 ```
 wsk action get test --save 
+# or
+aio rt action get test --save
 ```
 
 Listing all the available actions in your current namespace is as simple as running this command:
 ```
-wsk action list 
+wsk action list
+# or
+aio rt action ls
 ```
 
 ## Invoking actions
@@ -53,14 +64,20 @@ Now, that you have an action, you can call it using the following command (in th
 
 ```
 wsk action invoke test --result
+# or
+aio rt action invoke test --result
 ```
 Note the flag *--result* used in the command. This flag outputs the result of the invocation. Without it, instead of seeing the result of the invocation, you&rsquo;d get the activation ID. To get the result, you&rsquo;d use this ID to retrieve the result like this:
 ```
 wsk activation get <activation ID>
+# or
+aio rt activation get <activation ID>
 ```
 When you invoke an action, as in the example above, the invocation is not blocking (it is async). If you want to execute it in a blocking style and, as a result, get the activation record instead of just getting an activation ID, you have to add the *--blocking* flag to the command:
 ```
 wsk action invoke test --blocking
+# or
+aio rt action invoke test --blocking
 ```
 
 ## Working with parameters
@@ -70,6 +87,8 @@ Actions can receive parameters when are being executed. First, any parameters yo
 Second, let&rsquo;s see how you can invoke the action with parameters. Our function sample from above uses a parameter called *name*. This is how you can set the parameter when invoking the action:
 ```
 wsk action invoke test --param name "John Doe" --result
+# or 
+aio rt action invoke test --param name "John Doe" --result
 ```
 
 ## Setting default parameters
@@ -82,14 +101,18 @@ Let&rsquo;s assume that you want the default value of your parameter to be "Runt
 ```
 // creation time
 wsk action create test first-function.js --param name "Runtime"
+# or
+aio rt action create test first-function.js --param name "Runtime"
 
 // update
 wsk action update test first-function.js --param name "Runtime"
+# or
+aio rt action update test first-function.js --param name "Runtime"
 ```
 
 Now, you can run the action without any parameters, and it will use the default one you&rsquo;ve set. If you set a parameter when invoking, this will overwrite the default one.
 
-### Default paramenters set on package
+### Default parameters set on package
 
 When you create an action, it is always created in a package. If you don&rsquo;t specify a package, the *default* package is used. Similar to how you set default parameters at the action level, you can specify default parameters at the package level.
 
@@ -97,9 +120,13 @@ The difference is that the params set at the package level will be used for all 
 ```
 // creation time
 wsk package create my-package --param name "Runtime"
+# or
+aio rt package create my-package --param name "Runtime"
 
 // update
 wsk package update my-package --param name "Runtime"
+# or
+aio rt package update my-package --param name "Runtime"
 ```
 
 At this point, you might ask yourself what is the precedence when setting parameters at the package level, action level, and invocation time. The winner is parameters set at invocation time, followed by parameters set at action level, and the last is parameters set at package level.
@@ -134,15 +161,21 @@ You create a web action by adding the *--web* flag to the wsk action command:
 ```
 // creation time
 wsk action create test first-function.js --web true
+# or
+aio rt action create test first-function.js --web
 
 // update
 wsk action update test first-function.js --web true
+# or
+aio rt action update test first-function.js --web true
 ```
 Notice the *true* value used in the command. If you set that value to *false*, then you disable a web action.
 
 To call the action as a web action, you need to know the full path to the action. You can find the path by adding the *--url* flag to the action command:
 ```
 wsk action get test --url
+# or
+aio rt action get test --url
 ```
 This will give you something like:
 ```
@@ -183,6 +216,8 @@ If a web action has default parameters defined, then those parameter values are 
 Suppose that a web action has a default parameter called *name* with the value *Runtime*: 
 ```
 wsk action update test first-function.js --web true --param name "Runtime"
+# or
+aio rt action update test first-function.js --web true --param name "Runtime"
 ```
 
 When you invoke this web action, the value of *param.name* will always be *Runtime*. You can&rsquo;t overwrite by using a body or query parameter. 
